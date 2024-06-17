@@ -33,12 +33,11 @@
                         <span class="font-thin text-sm text-gray-600">Added {{ $passkey->created_at->diffForHumans() }}</span>
                     </div>
 
-                    <form method="post" action="/">
+                    <form method="post" action="{{ route('passkeys.destroy', $passkey) }}">
                         @csrf
                         @method('DELETE')
 
-                        <input type="hidden" name="id" value="{{ $passkey->id }}">
-                        <x-danger-button class="">Remove</x-danger-button>
+                        <x-danger-button>Remove</x-danger-button>
                     </form>
                 </li>
             @endforeach
