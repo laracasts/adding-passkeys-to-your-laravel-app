@@ -1,6 +1,6 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 id="managePasskeys" class="text-lg font-medium text-gray-900">
             {{ __('Manage Passkeys') }}
         </h2>
 
@@ -37,7 +37,6 @@
                         @csrf
                         @method('DELETE')
 
-                        <input type="hidden" name="id" value="{{ $passkey->id }}">
                         <x-danger-button class="">Remove</x-danger-button>
                     </form>
                 </li>
