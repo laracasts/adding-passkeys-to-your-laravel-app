@@ -15,6 +15,8 @@ class PasskeyController extends Controller
 {
     public function registerOptions(Request $request)
     {
+        $request->validate(['name' => ['required', 'string', 'max:255']]);
+
         $options = new PublicKeyCredentialCreationOptions(
             rp: new PublicKeyCredentialRpEntity(
                 name: config('app.name'),
