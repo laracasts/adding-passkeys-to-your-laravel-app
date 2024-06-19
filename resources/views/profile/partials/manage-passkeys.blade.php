@@ -15,7 +15,7 @@
 
         <div>
             <x-input-label for="create_passkey_passkey_name" :value="__('Passkey Name')"/>
-            <x-text-input id="create_passkey_passkey_name" name="name" class="mt-1 block w-full"/>
+            <x-text-input x-model="name" id="create_passkey_passkey_name" name="name" class="mt-1 block w-full"/>
             <x-input-error :messages="$errors->createPasskey->get('name')" class="mt-2"/>
             <x-alpine-input-error messages="errors?.name"/>
         </div>

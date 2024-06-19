@@ -8,12 +8,14 @@ window.Alpine = Alpine;
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('registerPasskey', () => ({
+        name: '',
         errors: null,
         async register(form) {
             this.errors = null;
 
             const options = await axios.get('/api/passkeys/register', {
                 validateStatus: (status) => [200, 422].includes(status),
+                params: { name: this.name },
             });
 
             if (options.status === 422) {
