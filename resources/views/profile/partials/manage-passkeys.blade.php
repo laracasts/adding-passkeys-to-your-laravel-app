@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <form x-data="registerPasskey" x-on:submit.prevent="register()" name="createPasskey" method="post" action="/" class="mt-6 space-y-6">
+    <form x-data="registerPasskey" x-on:submit.prevent="register($el)" name="createPasskey" method="post" action="{{ route('passkeys.store') }}" class="mt-6 space-y-6">
         @csrf
 
         <div>

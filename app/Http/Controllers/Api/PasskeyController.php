@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Webauthn\AuthenticatorSelectionCriteria;
 use Webauthn\PublicKeyCredentialCreationOptions;
@@ -30,6 +31,8 @@ class PasskeyController extends Controller
                 requireResidentKey: true,
             ),
         );
+
+        Session::flash('passkey-registration-options', $options);
 
         return $options;
     }
