@@ -14,8 +14,8 @@ document.addEventListener('alpine:init', () => {
             this.errors = null;
 
             const options = await axios.get('/api/passkeys/register', {
-                validateStatus: (status) => [200, 422].includes(status),
                 params: { name: this.name },
+                validateStatus: (status) => [200, 422].includes(status),
             });
 
             if (options.status === 422) {
