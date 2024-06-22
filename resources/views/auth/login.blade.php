@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form x-data="authenticatePasskey" x-init="authenticate()" method="POST" action="{{ route('login') }}">
+    <form x-data="authenticatePasskey" x-init="authenticate($el)" method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
@@ -10,6 +10,7 @@
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-error :messages="$errors->get('answer')" class="mt-2" />
         </div>
 
         <!-- Password -->
