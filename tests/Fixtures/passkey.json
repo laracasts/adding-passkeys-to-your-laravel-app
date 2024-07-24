@@ -1,0 +1,20 @@
+{
+    "publicKeyCredentialId": "xgu3FTvcxqLhNebtZiyQQQ",
+    "type": "public-key",
+    "transports": [
+        "internal",
+        "hybrid"
+    ],
+    "attestationType": "none",
+    "trustPath": {
+        "type": "Webauthn\\TrustPath\\EmptyTrustPath"
+    },
+    "aaguid": "bada5566-a7aa-401f-bd96-45619a55120d",
+    "credentialPublicKey": "pQECAyYgASFYIMFI5X7-eRkf7iV5WCbx2hFLg6q82cdBUogPqCcS8MsKIlggyp4nUTuGZ1ktq36JZ4aOzJy_pWL3FRg6Qld_Ti2zkFk",
+    "userHandle": "MQ",
+    "counter": 0,
+    "otherUI": null,
+    "backupEligible": true,
+    "backupStatus": true,
+    "uvInitialized": true
+}
