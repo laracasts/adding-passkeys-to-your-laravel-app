@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->text('name');
-            $table->text('credential_id');
+            $table->binary('credential_id');
             $table->json('data');
             $table->timestamps();
         });
