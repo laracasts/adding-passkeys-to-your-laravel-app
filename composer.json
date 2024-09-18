@@ -9,11 +9,7 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "phpdocumentor/reflection-docblock": "^5.4",
-        "symfony/property-access": "^7.1",
-        "symfony/property-info": "^7.1",
-        "symfony/serializer": "^7.1",
-        "web-auth/webauthn-lib": "^4.8"
+        "web-auth/webauthn-lib": "^5.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

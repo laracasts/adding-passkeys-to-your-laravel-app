@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Passkey;
+use App\Support\JsonSerializer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -13,6 +14,7 @@ use Webauthn\AuthenticatorAssertionResponse;
 use Webauthn\AuthenticatorAssertionResponseValidator;
 use Webauthn\AuthenticatorAttestationResponse;
 use Webauthn\AuthenticatorAttestationResponseValidator;
+use Webauthn\CeremonyStep\CeremonyStepManagerFactory;
 use Webauthn\Denormalizer\WebauthnSerializerFactory;
 use Webauthn\PublicKeyCredential;
 
@@ -22,10 +24,7 @@ class PasskeyController extends Controller
     {
         $data = $request->validate(['answer' => ['required', 'json']]);
 
-        /** @var PublicKeyCredential $publicKeyCredential */
-        $publicKeyCredential = (new WebauthnSerializerFactory(AttestationStatementSupportManager::create()))
-            ->create()
-            ->deserialize($data['answer'], PublicKeyCredential::class, 'json');
+        $publicKeyCredential = JsonSerializer::deserialize($data['answer'], PublicKeyCredential::class);
 
         if (! $publicKeyCredential->response instanceof AuthenticatorAssertionResponse) {
             return to_route('profile.edit')->withFragment('managePasskeys');
@@ -38,11 +37,13 @@ class PasskeyController extends Controller
         }
 
         try {
-            $publicKeyCredentialSource = AuthenticatorAssertionResponseValidator::create()->check(
-                credentialId: $passkey->data,
+            $publicKeyCredentialSource = AuthenticatorAssertionResponseValidator::create(
+                (new CeremonyStepManagerFactory())->requestCeremony()
+            )->check(
+                publicKeyCredentialSource: $passkey->data,
                 authenticatorAssertionResponse: $publicKeyCredential->response,
                 publicKeyCredentialRequestOptions: Session::get('passkey-authentication-options'),
-                request: $request->getHost(),
+                host: $request->getHost(),
                 userHandle: null,
             );
         } catch (\Throwable $e) {
@@ -69,20 +70,19 @@ class PasskeyController extends Controller
             'passkey' => ['required', 'json'],
         ]);
 
-        /** @var PublicKeyCredential $publicKeyCredential */
-        $publicKeyCredential = (new WebauthnSerializerFactory(AttestationStatementSupportManager::create()))
-            ->create()
-            ->deserialize($data['passkey'], PublicKeyCredential::class, 'json');
+        $publicKeyCredential = JsonSerializer::deserialize($data['passkey'], PublicKeyCredential::class);
 
         if (! $publicKeyCredential->response instanceof AuthenticatorAttestationResponse) {
             return to_route('login');
         }
 
         try {
-            $publicKeyCredentialSource = AuthenticatorAttestationResponseValidator::create()->check(
+            $publicKeyCredentialSource = AuthenticatorAttestationResponseValidator::create(
+                (new CeremonyStepManagerFactory())->creationCeremony(),
+            )->check(
                 authenticatorAttestationResponse: $publicKeyCredential->response,
                 publicKeyCredentialCreationOptions: Session::get('passkey-registration-options'),
-                request: $request->getHost(),
+                host: $request->getHost(),
             );
         } catch (\Throwable $e) {
             throw ValidationException::withMessages([

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\JsonSerializer;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,12 +25,10 @@ class Passkey extends Model
     public function data(): Attribute
     {
         return new Attribute(
-            get: fn(string $value) => (new WebauthnSerializerFactory(AttestationStatementSupportManager::create()))
-                ->create()
-                ->deserialize($value, PublicKeyCredentialSource::class, 'json'),
+            get: fn(string $value) => JsonSerializer::deserialize($value, PublicKeyCredentialSource::class),
             set: fn(PublicKeyCredentialSource $value) => [
                 'credential_id' => $value->publicKeyCredentialId,
-                'data' => json_encode($value),
+                'data' => JsonSerializer::serialize($value),
             ],
         );
     }
